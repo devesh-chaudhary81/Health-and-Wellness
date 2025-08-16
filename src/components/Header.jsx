@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Leaf } from "lucide-react";
+import AuthModal from "./AuthModal";
 
-const Header = ({ onSignInClick, onSignUpClick }) => {
+const Header = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [modalType, setModalType] = useState(null); // "signin" | "signup" | null
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,106 +20,108 @@ const Header = ({ onSignInClick, onSignUpClick }) => {
   };
 
   return (
-    <header
-      className="
-        flex justify-between items-center 
-        px-6 py-3 shadow-sm 
-        w-screen box-border relative z-[100] 
-        font-[Poppins] text-[16px]
-      "
-    >
-      {/* Logo section */}
-      <div className="flex items-center gap-[10px]">
-        <div
-          className="
-            bg-[#fef3c7] rounded-full w-12 h-12 
-            flex items-center justify-center
-          "
-        >
-          <Leaf color="#f97316" size={30} strokeWidth={2.5} />
-        </div>
-        <h1
-          className="
-            text-[24px] font-semibold text-[#ea580c] 
-            tracking-[-0.4px] m-0 font-[Poppins]
-          "
-        >
-          Tridosha AI
-        </h1>
-      </div>
-
-      {/* Navigation */}
-      <nav className="flex items-center gap-4 flex-wrap font-[Poppins]">
-        <Link
-          to="/"
-          className="
-            cursor-pointer text-[15px] font-medium text-[#333] 
-            px-[14px] py-[6px] rounded-md transition-colors duration-200
-            hover:bg-[#f97316] hover:text-white
-          "
-        >
-          Home
-        </Link>
-        <Link
-          to="/about"
-          className="
-            cursor-pointer text-[15px] font-medium text-[#333] 
-            px-[14px] py-[6px] rounded-md transition-colors duration-200
-            hover:bg-[#f97316] hover:text-white
-          "
-        >
-          About
-        </Link>
-        <Link
-          to="/contact"
-          className="
-            cursor-pointer text-[15px] font-medium text-[#333] 
-            px-[14px] py-[6px] rounded-md transition-colors duration-200
-            hover:bg-[#f97316] hover:text-white
-          "
-        >
-          Contact
-        </Link>
-
-        {!isAuthenticated ? (
-          <>
-            <button
-              onClick={onSignInClick}
-              className="
-                cursor-pointer text-[15px] font-medium text-[#333] 
-                px-[14px] py-[6px] rounded-md transition-colors duration-200
-                hover:bg-[#f97316] hover:text-white
-              "
-            >
-              Sign In
-            </button>
-            <button
-              onClick={onSignUpClick}
-              className="
-                cursor-pointer text-[15px] font-medium text-[#333] 
-                px-[14px] py-[6px] rounded-md transition-colors duration-200
-                hover:bg-[#f97316] hover:text-white
-              "
-            >
-              Sign Up
-            </button>
-          </>
-        ) : (
-          <button
-            onClick={handleLogout}
+    <>
+      {/* Sticky Glass Header */}
+      <header
+        className="
+          sticky top-0 z-[100]
+          flex justify-between items-center 
+          px-8 py-4 shadow-md
+          bg-white/70 backdrop-blur-lg
+          border-b border-orange-100
+          font-[Poppins] text-[16px]
+        "
+      >
+        {/* Logo section */}
+        <div className="flex items-center gap-3 cursor-pointer">
+          <div
             className="
-              cursor-pointer text-[15px] font-medium text-[#333] 
-              px-[14px] py-[6px] rounded-md transition-colors duration-200
-              hover:bg-[#f97316] hover:text-white
+              bg-gradient-to-br from-orange-200 to-orange-400
+              rounded-full w-12 h-12 
+              flex items-center justify-center
+              shadow-md
             "
           >
-            Logout
-          </button>
-        )}
-      </nav>
-    </header>
+            <Leaf color="white" size={26} strokeWidth={2.5} />
+          </div>
+          <h1
+            className="
+              text-2xl font-bold text-orange-600 
+              tracking-tight
+            "
+          >
+            Tridosha AI
+          </h1>
+        </div>
+
+        {/* Navigation */}
+        <nav className="flex items-center gap-5 font-medium">
+          {["Home", "About", "Contact"].map((item) => (
+            <Link
+              key={item}
+              to={`/${item.toLowerCase()}`}
+              className="
+                text-gray-700 relative 
+                after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px]
+                after:bg-orange-500 after:transition-all after:duration-300
+                hover:after:w-full hover:text-orange-600
+              "
+            >
+              {item}
+            </Link>
+          ))}
+
+          {!isAuthenticated ? (
+            <>
+              <button
+                onClick={() => setModalType("signin")}
+                className="
+                  px-5 py-2 rounded-xl
+                  bg-gradient-to-r from-orange-400 to-orange-600
+                  text-white font-semibold shadow-md
+                  hover:scale-105 hover:shadow-lg
+                  transition-all duration-300
+                "
+              >
+                Sign In
+              </button>
+              <button
+                onClick={() => setModalType("signup")}
+                className="
+                  px-5 py-2 rounded-xl
+                  border border-orange-500 text-orange-600 font-semibold
+                  hover:bg-orange-50 hover:scale-105
+                  transition-all duration-300
+                "
+              >
+                Sign Up
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={handleLogout}
+              className="
+                px-5 py-2 rounded-xl
+                bg-red-500 text-white font-semibold shadow-md
+                hover:scale-105 hover:bg-red-600
+                transition-all duration-300
+              "
+            >
+              Logout
+            </button>
+          )}
+        </nav>
+      </header>
+
+      {/* Modal */}
+      {modalType && (
+        <AuthModal type={modalType} onClose={() => setModalType(null)} />
+      )}
+    </>
   );
 };
 
 export default Header;
+
+
 

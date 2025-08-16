@@ -2,11 +2,12 @@ import React from "react";
 import Hero from "./Hero";
 import Doshas from "./Doshas";
 import Journey from "./Journey";
+import Header from "./Header";
 
-const LandingPage = ({ onStartAssessmentClick }) => {
+const LandingPage = () => {
   return (
-    <main id="main-content" className="main-wrapper">
-      <Hero onSignInClick={onStartAssessmentClick} />
+    <main>
+      <Hero/>
       <Doshas />
       <Journey />
     </main>

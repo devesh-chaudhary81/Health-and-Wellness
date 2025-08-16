@@ -54,6 +54,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage onStartAssessmentClick={onSignInClick} />} />
         <Route path="/about" element={<About />} />
+        <Route path="/home" element={<LandingPage />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/learn" element={<Learn />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
