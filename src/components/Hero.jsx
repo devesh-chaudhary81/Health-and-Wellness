@@ -6,8 +6,10 @@ import { Link } from "react-router-dom";
 const Hero = ({ onSignInClick }) => (
   <section className="w-screen text-center py-8 px-4 bg-gradient-to-b from-[#fce8ce] to-[#fcf4e8]">
     {/* Logo ring */}
+    <div className="flex justify-center">
     <div className="w-[60px] h-[60px] bg-white rounded-full flex justify-center items-center animate-[spin_3s_linear_infinite]">
       <img src={leaf} alt="Tridosha Logo" className="w-[50px] h-[50px] rounded-full" />
+    </div>
     </div>
 
     {/* Heading */}
